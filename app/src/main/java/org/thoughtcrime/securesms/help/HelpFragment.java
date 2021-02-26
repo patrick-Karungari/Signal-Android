@@ -127,7 +127,7 @@ public class HelpFragment extends LoggingFragment {
     setSpinning(next);
     problem.setEnabled(false);
 
-    helpViewModel.onSubmitClicked(includeDebugLogs.isChecked()).observe(this, result -> {
+    helpViewModel.onSubmitClicked(includeDebugLogs.isChecked()).observe(getViewLifecycleOwner(), result -> {
       if (result.getDebugLogUrl().isPresent()) {
         submitFormWithDebugLog(result.getDebugLogUrl().get());
       } else if (result.isError()) {
@@ -172,7 +172,7 @@ public class HelpFragment extends LoggingFragment {
     }
 
     return SupportEmailUtil.generateSupportEmailBody(requireContext(),
-                                                     getString(R.string.HelpFragment__signal_android_support_request),
+                                                     R.string.HelpFragment__signal_android_support_request,
                                                      problem.getText().toString() + "\n\n",
                                                      suffix.toString());
   }

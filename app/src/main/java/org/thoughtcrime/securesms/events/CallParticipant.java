@@ -85,7 +85,7 @@ public final class CallParticipant {
     this.deviceOrdinal     = deviceOrdinal;
   }
 
-  public @NonNull CallParticipant withIdentityKey(@NonNull IdentityKey identityKey) {
+  public @NonNull CallParticipant withIdentityKey(@Nullable IdentityKey identityKey) {
     return new CallParticipant(callParticipantId, recipient, identityKey, videoSink, cameraState, videoEnabled, microphoneEnabled, lastSpoke, mediaKeysReceived, addedToCallTime, deviceOrdinal);
   }
 
@@ -110,6 +110,18 @@ public final class CallParticipant {
       return recipient.getDisplayName(context);
     } else {
       return context.getString(R.string.CallParticipant__s_on_another_device, recipient.getDisplayName(context));
+    }
+  }
+
+  public @NonNull String getShortRecipientDisplayName(@NonNull Context context) {
+    if (recipient.isSelf() && isPrimary()) {
+      return context.getString(R.string.CallParticipant__you);
+    } else if (recipient.isSelf()) {
+      return context.getString(R.string.CallParticipant__you_on_another_device);
+    } else if (isPrimary()) {
+      return recipient.getShortDisplayName(context);
+    } else {
+      return context.getString(R.string.CallParticipant__s_on_another_device, recipient.getShortDisplayName(context));
     }
   }
 
